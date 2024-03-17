@@ -38,7 +38,7 @@ const config: Config = {
           foreground: alias("gray", 1),
         },
         secondary: {
-          DEFAULT: alias("gray", 6),
+          DEFAULT: alias("gray", 3),
           foreground: alias("gray", 12),
         },
         destructive: {
@@ -78,30 +78,30 @@ const config: Config = {
           to: { height: "0" },
         },
       },
-      typography: ({ theme }: { theme: (key: string) => string }) => {
-        return {
-          radix: {
-            css: {
-              "--tw-prose-body": theme(`colors.gray.12`),
-              "--tw-prose-headings": theme(`colors.gray.12`),
-              "--tw-prose-lead": theme(`colors.gray.11`),
-              "--tw-prose-links": theme(`colors.blue.12`),
-              "--tw-prose-bold": theme(`colors.gray.12`),
-              "--tw-prose-counters": theme(`colors.gray.10`),
-              "--tw-prose-bullets": theme(`colors.gray.8`),
-              "--tw-prose-hr": theme(`colors.gray.6`),
-              "--tw-prose-quotes": theme(`colors.gray.11`),
-              "--tw-prose-quote-borders": theme(`colors.gray.6`),
-              "--tw-prose-captions": theme(`colors.gray.11`),
-              "--tw-prose-code": theme(`colors.gray.12`),
-              "--tw-prose-pre-code": theme(`colors.gray.2`),
-              "--tw-prose-pre-bg": theme(`colors.gray.2`),
-              "--tw-prose-th-borders": theme(`colors.gray.6`),
-              "--tw-prose-td-borders": theme(`colors.gray.6`),
-            },
-          },
-        };
-      },
+      // typography: ({ theme }: { theme: (key: string) => string }) => {
+      //   return {
+      //     radix: {
+      //       css: {
+      //         "--tw-prose-body": theme(`colors.gray.12`),
+      //         "--tw-prose-headings": theme(`colors.gray.12`),
+      //         "--tw-prose-lead": theme(`colors.gray.11`),
+      //         "--tw-prose-links": theme(`colors.blue.12`),
+      //         "--tw-prose-bold": theme(`colors.gray.12`),
+      //         "--tw-prose-counters": theme(`colors.gray.10`),
+      //         "--tw-prose-bullets": theme(`colors.gray.8`),
+      //         "--tw-prose-hr": theme(`colors.gray.6`),
+      //         "--tw-prose-quotes": theme(`colors.gray.11`),
+      //         "--tw-prose-quote-borders": theme(`colors.gray.6`),
+      //         "--tw-prose-captions": theme(`colors.gray.11`),
+      //         "--tw-prose-code": theme(`colors.gray.12`),
+      //         "--tw-prose-pre-code": theme(`colors.gray.2`),
+      //         "--tw-prose-pre-bg": theme(`colors.gray.2`),
+      //         "--tw-prose-th-borders": theme(`colors.gray.6`),
+      //         "--tw-prose-td-borders": theme(`colors.gray.6`),
+      //       },
+      //     },
+      //   };
+      // },
     },
   },
   plugins: [
@@ -109,5 +109,6 @@ const config: Config = {
     require("@tailwindcss/typography"),
     require("tailwindcss-animate"),
   ],
+  presets: [require("windy-radix-typography")],
 };
 export default config;

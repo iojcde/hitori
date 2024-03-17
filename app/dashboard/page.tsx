@@ -1,6 +1,6 @@
 import { WorkspaceCard } from "./vault-card";
 import { authOptions } from "@/lib/auth";
-import { Vaults } from "./vaults";
+import { Notes } from "./notes";
 import { Suspense } from "react";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
@@ -37,7 +37,7 @@ const Dashboard = async () => {
           </div>
         }
       >
-        <Vaults />
+        <Notes />
       </Suspense>
     </div>
   );

@@ -1,5 +1,5 @@
-import { UserNav } from "@/components/user-nav"
-import Link from "next/link"
+import { UserNav } from "@/components/user-nav";
+import Link from "next/link";
 
 export const Nav = () => {
   return (
@@ -9,10 +9,10 @@ export const Nav = () => {
           href="/dashboard"
           className="font-display flex items-center gap-2 text-xl font-medium"
         >
-          Kaiwa
+          Notemaker
         </Link>
         <UserNav />
       </div>
     </nav>
-  )
-}
+  );
+};
