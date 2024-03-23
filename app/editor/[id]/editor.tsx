@@ -81,6 +81,10 @@ const Tiptap = ({ note }) => {
           return "Untitled Document";
         }
 
+        if (node.type.name == "codeBlock") {
+          return 'console.log("Hello, World!");\n';
+        }
+
         return 'Press "/" for commands';
       },
     }),
@@ -106,7 +110,6 @@ const Tiptap = ({ note }) => {
             }}
             content={note.content}
             onUpdate={({ editor }) => {
-              console.log(editor.getHTML());
               save({
                 id: note.id,
                 title: "Untitled",

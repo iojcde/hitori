@@ -4,25 +4,148 @@ import {
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
+  ContextMenuSeparator,
+  ContextMenuGroup,
+  ContextMenuSub,
+  ContextMenuSubTrigger,
+  ContextMenuSubContent,
 } from "@/components/ui/context-menu";
-import { CopyIcon } from "lucide-react";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ClipboardPasteIcon,
+  CopyIcon,
+  TableIcon,
+  TrashIcon,
+} from "lucide-react";
+import { useState } from "react";
 export const EditorContextMenuWrapper = ({ children }) => {
   const { editor } = useCurrentEditor();
+
+  const [state, setState] = useState<{
+    isInTable: boolean;
+  }>({});
 
   if (!editor) return null;
 
   return (
     <ContextMenu modal={false}>
-      <ContextMenuTrigger>{children}</ContextMenuTrigger>
+      <ContextMenuTrigger
+        onContextMenu={(e) => {
+          const target = e.target as HTMLElement;
+          const isInTable = target.closest("table") != null;
+          setState({ isInTable });
+        }}
+      >
+        {children}
+      </ContextMenuTrigger>
       <ContextMenuContent
-        onAnimationStart={() => {
+        onAnimationStart={(e) => {
+          console.log("animation start", e);
           editor.commands.focus();
         }}
         onFocusOutside={(e) => {
           e.preventDefault();
         }}
-        className="border min-w-[10rem]"
+        className="border border-gray-6 min-w-[12rem] p-1"
       >
+        {state.isInTable && (
+          <>
+            <ContextMenuSub>
+              <ContextMenuSubTrigger>
+                <TableIcon size="13" className="mr-2 " />
+                Row
+              </ContextMenuSubTrigger>
+              <ContextMenuSubContent
+                onFocusOutside={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.closest(".ProseMirror")) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().addRowBefore().run();
+                  }}
+                >
+                  <ArrowUpIcon size="13" className="mr-2" />
+                  Add Row Before
+                </ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().addRowAfter().run();
+                  }}
+                >
+                  <ArrowDownIcon size="13" className="mr-2" />
+                  Add Row After
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().deleteRow().run();
+                  }}
+                >
+                  <TrashIcon size="13" className="mr-2" />
+                  Delete Row
+                </ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuSub>
+              <ContextMenuSubTrigger
+                onFocus={() => {
+                  console.log("sub trigger focus");
+                }}
+              >
+                <TableIcon size="13" className="mr-2 " />
+                Column
+              </ContextMenuSubTrigger>
+              <ContextMenuSubContent
+                onFocusOutside={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.closest(".ProseMirror")) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().addColumnBefore().run();
+                  }}
+                >
+                  <ArrowUpIcon size="13" className="mr-2" />
+                  Add Column Before
+                </ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().addColumnAfter().run();
+                  }}
+                >
+                  <ArrowDownIcon size="13" className="mr-2" />
+                  Add Column After
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem
+                  onClick={() => {
+                    editor.chain().focus().deleteColumn().run();
+                  }}
+                >
+                  <TrashIcon size="13" className="mr-2" />
+                  Delete Column
+                </ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuItem
+              onClick={() => {
+                editor.chain().focus().deleteTable().run();
+              }}
+            >
+              <TrashIcon size="13" className="mr-2" />
+              Delete Table
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+          </>
+        )}
         <ContextMenuItem
           disabled={editor.state.selection.empty}
           onClick={() => {
@@ -32,14 +155,21 @@ export const EditorContextMenuWrapper = ({ children }) => {
 
             navigator.clipboard.writeText(text);
           }}
-          className="flex items-center gap-2"
         >
-          <CopyIcon size="12" />
+          <CopyIcon size="13" className="mr-2" />
           Copy
         </ContextMenuItem>
-        <ContextMenuItem>Billing</ContextMenuItem>
-        <ContextMenuItem>Team</ContextMenuItem>
-        <ContextMenuItem>Subscription</ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => {
+            editor.chain().focus().run();
+            navigator.clipboard.readText().then((text) => {
+              editor.commands.insertContent(text);
+            });
+          }}
+        >
+          <ClipboardPasteIcon size="13" className="mr-2" />
+          Paste
+        </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );

@@ -8,7 +8,7 @@
   }
 
   :root {
-    --radius: 0.5rem;
+    --radius: 12px;
     
   }
   * {
@@ -97,7 +97,7 @@ p a {
     float: left;
     pointer-events: none;
     height: 0;
-    @apply text-gray-10;
+    @apply text-gray-9;
   }
 
 
@@ -108,17 +108,17 @@ p a {
 
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
-  float: left;
-  color: var(--novel-stone-400);
+  float: left; 
   pointer-events: none;
   height: 0;
+  @apply text-gray-9;
 }
 .ProseMirror .is-empty::before {
   content: attr(data-placeholder);
-  float: left;
-  color: hsl(var(--muted-foreground));
+  float: left; 
   pointer-events: none;
   height: 0;
+  @apply text-gray-9;
 }
 
 /* Custom image styles */
@@ -126,17 +126,19 @@ p a {
 .ProseMirror img {
   transition: filter 0.1s ease-in-out;
 
-  &:hover {
-    cursor: pointer;
-    filter: brightness(90%);
-  }
 
-  &.ProseMirror-selectednode {
-    outline: 3px solid #5abbf7;
-    filter: brightness(90%);
-  }
 }
 
+.ProseMirror img:hover {
+  cursor: pointer;
+  filter: brightness(90%);
+}
+
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid #5abbf7;
+  filter: brightness(90%);
+}
 
 /* Table-specific styling */
 .tiptap table {

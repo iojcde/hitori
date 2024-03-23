@@ -20,7 +20,12 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["table", "grid", "spreadsheet"],
     icon: <Table size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertTable({ rows: 3, cols: 3 })
+        .run();
     },
   },
   {
