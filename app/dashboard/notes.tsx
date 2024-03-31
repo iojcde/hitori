@@ -1,13 +1,12 @@
 import { db } from "@/lib/db";
 import { WorkspaceCard } from "./vault-card";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import { timeAgo } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { auth } from "@/lib/auth";
 
 export const Notes = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return null;
@@ -20,7 +19,7 @@ export const Notes = async () => {
   });
 
   return (
-    <div className="mt-8 rounded-lg grid lg:grid-cols-2 ">
+    <div className="mt-8 rounded-lg grid lg:grid-cols-2 gap-2 ">
       {notes.length > 0 ? (
         notes.map((note) => (
           <Link

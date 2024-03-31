@@ -69,5 +69,6 @@ model Note {
 
 model Tag {
   id    Int    @id @default(autoincrement())
+  name  String
   Notes Note[]
 }

@@ -1,29 +1,15 @@
 import { WorkspaceCard } from "./vault-card";
-import { authOptions } from "@/lib/auth";
 import { Notes } from "./notes";
 import { Suspense } from "react";
 import Link from "next/link";
-import { PlusCircle } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { NewNoteButton } from "./new-note-button";
 
 const Dashboard = async () => {
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className="text-4xl font-bold tracking-tight">Notes</h1>
-        <Link
-          href="/create"
-          className={cn(
-            "flex items-center gap-2",
-            buttonVariants({ variant: "ghost" })
-          )}
-        >
-          <PlusCircle className="inline-block" />
-          <div className="text-gray-11">
-            <span className="font-semibold text-gray-12">New</span> {` `}note
-          </div>
-        </Link>
+        <NewNoteButton />
       </div>
 
       <Suspense

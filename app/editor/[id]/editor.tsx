@@ -1,7 +1,10 @@
 "use client";
 
 import { saveNote } from "@/actions/save-note";
-import Document from "@tiptap/extension-document";
+import TableOfContents, {
+  TableOfContentData,
+  getHierarchicalIndexes,
+} from "@tiptap-pro/extension-table-of-contents";
 import Placeholder from "@tiptap/extension-placeholder";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
@@ -10,7 +13,7 @@ import TableRow from "@tiptap/extension-table-row";
 import Typography from "@tiptap/extension-typography";
 
 import StarterKit from "@tiptap/starter-kit";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
 import { Markdown } from "tiptap-markdown";
 import { Command, handleCommandNavigation } from "./extensions/command";
 import { slashCommand, suggestionItems } from "./slash-command";
@@ -25,15 +28,18 @@ import {
 import EditorCommandItem, {
   EditorCommandEmpty,
 } from "./extensions/editor-command-item";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import tunnel from "tunnel-rat";
 import { editorStore } from "./extensions/utils/store";
 import { EditorProvider } from "./editor-context";
 import { Editor } from "@tiptap/react";
+import { Statusbar } from "./statusbar";
+import { useRouter } from "next-nprogress-bar";
+import { toast } from "sonner";
+import React from "react";
+import { ToC } from "./toc";
 
-const CustomDocument = Document.extend({
-  content: "heading block*",
-});
+const MemorizedToC = React.memo(ToC);
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
@@ -55,19 +61,37 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   );
 };
 
-const save = debounce(async ({ id, title, content }) => {
-  console.log("Saving", id, title, content);
-  await saveNote({ id, title, content });
-}, 2000);
-
 const Tiptap = ({ note }) => {
+  const router = useRouter();
+
+  const [saved, setSaved] = useState(true);
+  const [tocItems, setTocItems] = useState<TableOfContentData>([]);
+
+  const save = useCallback(
+    debounce(async ({ id, title, content }) => {
+      console.log("Saving", id, title, content);
+      await saveNote({ id, title, content })
+        .then(() => {
+          setSaved(true);
+        })
+        .catch(() => {
+          setSaved(false);
+          toast.error("Failed to save note");
+        });
+    }, 2000),
+    []
+  );
+
   const extensions = [
     Markdown,
-    CustomDocument,
-    Typography,
-    StarterKit.configure({
-      document: false,
+    TableOfContents.configure({
+      getIndex: getHierarchicalIndexes,
+      onUpdate(content) {
+        setTocItems(content);
+      },
     }),
+    Typography,
+    StarterKit,
     Table.configure({
       resizable: true,
       lastColumnResizable: false,
@@ -77,10 +101,6 @@ const Tiptap = ({ note }) => {
     TableCell,
     Placeholder.configure({
       placeholder: ({ node }) => {
-        if (node.type.name === "heading") {
-          return "Untitled Document";
-        }
-
         if (node.type.name == "codeBlock") {
           return 'console.log("Hello, World!");\n';
         }
@@ -91,10 +111,36 @@ const Tiptap = ({ note }) => {
     slashCommand,
   ];
 
+  const [title, setTitle] = useState(note.title);
+
   const tunnelInstance = useRef(tunnel()).current;
 
   return (
-    <div className="p-8">
+    <div className="p-8 pt-16">
+      <input
+        className="text-4xl font-bold outline-none bg-inherit"
+        value={title}
+        onChange={(e) => {
+          setTitle(e.target.value);
+          setSaved(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+
+            (document.querySelector(".ProseMirror") as HTMLElement)?.focus();
+
+            return;
+          }
+        }}
+        onBlur={() => {
+          save({
+            id: note.id,
+            title,
+            content: note.content,
+          });
+        }}
+      />
       <EditorCommandTunnelContext.Provider value={tunnelInstance}>
         <Provider store={editorStore}>
           <EditorProvider
@@ -105,14 +151,15 @@ const Tiptap = ({ note }) => {
               },
               attributes: {
                 class:
-                  "focus:outline-none border-none mt-8 prose prose-gray prose-strong:font-bold prose-h1:font-bold text-base",
+                  "focus:outline-none border-none prose mt-8 prose-gray prose-strong:font-bold prose-h1:font-bold text-base",
               },
             }}
             content={note.content}
             onUpdate={({ editor }) => {
+              setSaved(false);
               save({
                 id: note.id,
-                title: "Untitled",
+                title,
                 content: editor.getHTML(),
               });
             }}
@@ -144,6 +191,9 @@ const Tiptap = ({ note }) => {
                 ))}
               </EditorCommandList>
             </EditorCommand>
+
+            <Statusbar saved={saved} />
+            <MemorizedToC items={tocItems} />
           </EditorProvider>
         </Provider>
       </EditorCommandTunnelContext.Provider>

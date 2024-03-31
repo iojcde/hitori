@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { getServerSession } from "next-auth";
 import { UserNav } from "../user-nav";
+import { auth } from "@/lib/auth";
 
 export const IntroNav = async () => {
-  const session = await getServerSession();
-  console.log('session', session);
+  const session = await auth();
+  console.log("session", session);
   return (
     <nav className="container flex items-center w-full overflow-x-auto justify-between py-4">
       <div className="flex items-center gap-12">

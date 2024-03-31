@@ -1,11 +1,10 @@
-import type { Config } from "tailwindcss";
-
+ 
 import { createPlugin } from "windy-radix-palette";
 
 const colors = createPlugin({});
 const alias = colors.alias;
 
-const config: Config = {
+const config= {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -28,7 +27,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: () => ({
-        border: alias("gray", 4),
+        border: alias("gray", 6),
         input: alias("gray", 6),
         ring: alias("gray", 7),
         background: alias("gray", 1),
@@ -47,7 +46,7 @@ const config: Config = {
         },
         muted: {
           DEFAULT: alias("gray", 3),
-          foreground: alias("gray", 11),
+          foreground: alias("gray", 10),
         },
         accent: {
           // DEFAULT: `${alias("gray", 3)}/80`,

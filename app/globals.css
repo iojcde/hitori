@@ -8,7 +8,7 @@
   }
 
   :root {
-    --radius: 12px;
+    --radius: 10px;
     
   }
   * {
@@ -16,7 +16,7 @@
      
   }
   body {
-    @apply overflow-x-clip bg-white dark:bg-black text-foreground selection:bg-violet-400/30;
+    @apply overflow-x-clip bg-white dark:bg-background text-foreground selection:bg-violet-400/30;
   }
 
   .font-display {
@@ -191,4 +191,8 @@ p a {
 .resize-cursor {
   cursor: ew-resize;
   cursor: col-resize;
+}
+
+[data-radix-scroll-area-viewport] {
+  @apply  scroll-mt-[20px]
 }

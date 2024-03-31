@@ -12,8 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getServerSession } from "next-auth";
+} from "@/components/ui/dropdown-menu"; 
 import { authOptions } from "@/lib/auth";
 import { signOut, useSession } from "next-auth/react";
 

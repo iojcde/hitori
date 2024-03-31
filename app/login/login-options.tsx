@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Github, Loader2 } from "lucide-react"
-import { signIn } from "next-auth/react"
-import { Input } from "@/components/ui/input"
-import { FormEvent, useState } from "react"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Github, Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { Input } from "@/components/ui/input";
+import { FormEvent, useState } from "react";
 
 export const LoginOptions = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [email, setEmail] = useState("")
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
+    event.preventDefault();
+    setIsLoading(true);
 
-    await signIn("email", { email })
-    setIsLoading(false)
+    await signIn("resend", { email });
+    setIsLoading(false);
   }
 
   return (
@@ -80,5 +80,5 @@ export const LoginOptions = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

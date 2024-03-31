@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from "clsx";
-import { customAlphabet } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -8,15 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function wait(milliseconds: number) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
-}
-
-const alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
-const length = 12;
-
-const nanoid = customAlphabet(alphabet, length);
-
-export function generatePublicId() {
-  return nanoid();
 }
 
 export const encodeFilename = (filename: string) => {
@@ -36,10 +26,16 @@ export function timeAgo(input: Date) {
     seconds: 1,
   };
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+
+  if (secondsElapsed > -60) {
+    return "Just now";
+  }
+
   for (let key in ranges) {
     if (ranges[key] < Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / ranges[key];
       return formatter.format(Math.round(delta), key as any);
     }
   }
+  return "error wow";
 }

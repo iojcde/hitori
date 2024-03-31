@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Command,
@@ -8,81 +8,83 @@ import {
   CommandItem,
   CommandInput,
   CommandList,
-} from "@/components/ui/command"
-import { useEffect, useRef, useState } from "react"
-import { Dialog, DialogContent } from "../ui/dialog"
-import { useTheme } from "next-themes"
-import { wait } from "@/lib/utils"
-import { Home, Laptop, Moon, Plus, Settings, SunMedium } from "lucide-react"  
-import { useCommandState } from "cmdk"
-import { redirect, useRouter } from "next/navigation"
+} from "@/components/ui/command";
+import { useEffect, useRef, useState } from "react";
+import { Dialog, DialogContent } from "../ui/dialog";
+import { useTheme } from "next-themes";
+import { wait } from "@/lib/utils";
+import { Home, Laptop, Moon, Plus, Settings, SunMedium } from "lucide-react";
+import { useCommandState } from "cmdk";
+import { redirect, useRouter } from "next/navigation";
+import { newNote } from "@/actions/new-note";
+import { toast } from "sonner";
 
 export function CommandMenu() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const [search, setSearch] = useState("")
-  const [pages, setPages] = useState([])
+  const [search, setSearch] = useState("");
+  const [pages, setPages] = useState([]);
 
-  const [selected, setSelected] = useState("")
-  const page = pages[pages.length - 1]
+  const [selected, setSelected] = useState("");
+  const page = pages[pages.length - 1];
 
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        toggleOpen((open) => !open)
+        e.preventDefault();
+        toggleOpen((open) => !open);
       }
-    }
+    };
 
     const touch = (e: TouchEvent) => {
       if (e.touches.length > 1) {
-        toggleOpen((open) => !open)
+        toggleOpen((open) => !open);
       }
-    }
+    };
 
-    document.addEventListener("keydown", down)
-    document.addEventListener("touchstart", touch)
+    document.addEventListener("keydown", down);
+    document.addEventListener("touchstart", touch);
     return () => {
-      document.removeEventListener("keydown", down)
-      document.removeEventListener("touchstart", touch)
-    }
-  }, [])
+      document.removeEventListener("keydown", down);
+      document.removeEventListener("touchstart", touch);
+    };
+  }, []);
 
   const toggleOpen = (open: boolean | ((open: boolean) => boolean)) => {
     if (open) {
-      setSearch("")
-      setSelected("")
-      setPages([])
+      setSearch("");
+      setSelected("");
+      setPages([]);
     }
-    setOpen(open)
-  }
+    setOpen(open);
+  };
 
   const triggerTheme = (theme: "dark" | "light" | "system") => {
-    setTheme(theme)
-    toggleOpen(false)
-  }
+    setTheme(theme);
+    toggleOpen(false);
+  };
 
   const changePage = (page: string) => {
-    const commandMenu = document.querySelector(".command-menu") as HTMLElement
+    const commandMenu = document.querySelector(".command-menu") as HTMLElement;
 
-    commandMenu.style.transform = `translate(-50%, 0) scale(0.99)`
-    commandMenu.style.transition = "transform 0.1s ease 0s"
+    commandMenu.style.transform = `translateY(-45%,0) scale(0.99)`;
+    commandMenu.style.transition = "transform 0.1s ease 0s";
     setTimeout(() => {
-      commandMenu.style.transform = ``
-      commandMenu.style.transition = ""
-    }, 100)
+      commandMenu.style.transform = ``;
+      commandMenu.style.transition = "";
+    }, 100);
 
-    setPages((pages) => [...pages, page])
-    setSearch("")
-  }
+    setPages((pages) => [...pages, page]);
+    setSearch("");
+  };
 
   return (
     <Dialog open={open} onOpenChange={toggleOpen}>
-      <DialogContent className="command-menu ease-ease bottom-0 top-0 flex max-w-[38rem] flex-col gap-0 overflow-hidden  border-x-0 p-0 shadow-xl outline-none transition-[outline,scale,transform] duration-100  sm:bottom-auto sm:top-[20%] sm:border-x">
+      <DialogContent className="command-menu ease-ease  flex max-w-[38rem] flex-col gap-0 overflow-clip  p-0 shadow-xl outline-none transition-[outline,scale,transform] duration-100  ">
         <div className="flex h-[40px] gap-2 bg-background p-2 px-4 text-xs text-gray-11 ">
           <button className="rounded bg-gray-3 px-2 py-1">Home</button>
           {pages.map((page, i) => (
@@ -104,8 +106,8 @@ export function CommandMenu() {
               (e.key === "Escape" && pages.length > 0) ||
               (e.key === "Backspace" && !search)
             ) {
-              e.preventDefault()
-              setPages((pages) => pages.slice(0, -1))
+              e.preventDefault();
+              setPages((pages) => pages.slice(0, -1));
             }
           }}
           className="[&_[cmdk-list-sizer]] rounded-none p-1.5 [&_[cmdk-group-heading]]:relative  [&_[cmdk-group-heading]]:z-20
@@ -126,8 +128,20 @@ export function CommandMenu() {
               <>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup className="text-gray-11" heading="Editor">
-                  <CommandItem>
-                    <Plus /> New Document
+                  <CommandItem
+                    onSelect={async () => {
+                      toggleOpen(false);
+                      toast.promise(newNote(), {
+                        loading: "Creating a new note...",
+                        success: (n) => {
+                          router.push(`/editor/${n.id}`);
+                          return "Note created";
+                        },
+                        error: "Failed to create note",
+                      });
+                    }}
+                  >
+                    <Plus /> New Note
                   </CommandItem>
                 </CommandGroup>
 
@@ -151,8 +165,8 @@ export function CommandMenu() {
 
                   <CommandItem
                     onSelect={() => {
-                      router.push("/dashboard")
-                      toggleOpen(false)
+                      router.push("/dashboard");
+                      toggleOpen(false);
                     }}
                   >
                     <Home />
@@ -182,51 +196,52 @@ export function CommandMenu() {
         </Command>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 const Highlighter = ({
   page,
   setSelected,
 }: {
-  page: string
-  setSelected: (value: string) => void
+  page: string;
+  setSelected: (value: string) => void;
 }) => {
   const repositionHighlight = (selected: string) => {
     const highlight = document.querySelector(
       ".command-menu .highlight"
-    ) as HTMLElement
+    ) as HTMLElement;
 
     if (selected) {
       const selectedElement = document.querySelector(
         '.command-menu  [cmdk-item][aria-selected="true"]'
-      ) as HTMLElement
+      ) as HTMLElement;
       // console.log(selectedElement.innerHTML)
 
-      highlight.style.transform = `translateY(${selectedElement?.offsetTop}px)`
-      highlight.style.height = `${selectedElement?.getBoundingClientRect()
-        .height}px`
+      highlight.style.transform = `translateY(${selectedElement?.offsetTop}px)`;
+      highlight.style.height = `${
+        selectedElement?.getBoundingClientRect().height
+      }px`;
     } else {
-      highlight.style.transform = `translateY(0)`
-      highlight.style.height = `0`
+      highlight.style.transform = `translateY(0)`;
+      highlight.style.height = `0`;
     }
-  }
+  };
 
-  const selected = useCommandState((state) => state.value)
-
-  useEffect(() => {
-    repositionHighlight(selected)
-  }, [selected, page])
+  const selected = useCommandState((state) => state.value);
 
   useEffect(() => {
-    const firstItem = document.querySelector(".command-menu [cmdk-item]")
+    repositionHighlight(selected);
+  }, [selected, page]);
+
+  useEffect(() => {
+    const firstItem = document.querySelector(".command-menu [cmdk-item]");
     if (firstItem) {
-      firstItem.setAttribute("aria-selected", "true")
-      setSelected(firstItem.getAttribute("data-value"))
+      firstItem.setAttribute("aria-selected", "true");
+      setSelected(firstItem.getAttribute("data-value"));
     }
-  }, [page])
+  }, [page]);
 
   return (
     <div className="highlight ease-ease absolute inset-x-0 top-0 z-0 rounded-[calc(var(--radius)-1.5px)]  bg-accent transition-transform " />
-  )
-}
+  );
+};
