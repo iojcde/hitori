@@ -40,27 +40,25 @@ import React from "react";
 import { ToC } from "./toc";
 import { RightSidebar } from "./sidebar-right";
 
-const MemorizedToC = React.memo(ToC);
+// const MenuBar = ({ editor }: { editor: Editor | null }) => {
+//   if (!editor) {
+//     return null;
+//   }
 
-const MenuBar = ({ editor }: { editor: Editor | null }) => {
-  if (!editor) {
-    return null;
-  }
-
-  return (
-    <div>
-      <button onClick={() => editor.chain().focus().toggleBold().run()}>
-        Bold
-      </button>
-      <button onClick={() => editor.chain().focus().toggleItalic().run()}>
-        Italic
-      </button>
-      <button onClick={() => editor.chain().focus().toggleList().run()}>
-        List
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <button onClick={() => editor.chain().focus().toggleBold().run()}>
+//         Bold
+//       </button>
+//       <button onClick={() => editor.chain().focus().toggleItalic().run()}>
+//         Italic
+//       </button>
+//       <button onClick={() => editor.chain().focus().toggleList().run()}>
+//         List
+//       </button>
+//     </div>
+//   );
+// };
 
 export const CustomTable = Table.extend({
   renderHTML({ HTMLAttributes }) {
