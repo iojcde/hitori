@@ -15,7 +15,7 @@ export const NewNoteButton = () => {
       onClick={async () => {
         toast.promise(newNote(), {
           loading: "Creating a new note...",
-          success: (n) => {
+          success: (n: string) => {
             router.push(`/editor/${n.id}`);
             return "Note created";
           },
