@@ -1,13 +1,12 @@
 import React from "react";
-import { type Tag as TagType } from "./tag-input";
 import { Tag, TagProps } from "./tag";
 import { cn } from "@/lib/utils";
 
 export type TagListProps = {
-  tags: TagType[];
-  customTagRenderer?: (tag: TagType) => React.ReactNode;
+  tags: string[];
+  customTagRenderer?: (tag: string) => React.ReactNode;
   direction?: TagProps["direction"];
-} & Omit<TagProps, "tagObj">;
+} & Omit<TagProps, "tag">;
 
 export const TagList: React.FC<TagListProps> = ({
   tags,
@@ -22,11 +21,11 @@ export const TagList: React.FC<TagListProps> = ({
         "flex flex-col gap-2": direction === "column",
       })}
     >
-      {tags.map((tagObj) =>
+      {tags.map((tag) =>
         customTagRenderer ? (
-          customTagRenderer(tagObj)
+          customTagRenderer(tag)
         ) : (
-          <Tag key={tagObj.id} tagObj={tagObj} {...tagProps} />
+          <Tag key={tag} tag={tag} {...tagProps} />
         )
       )}
     </div>

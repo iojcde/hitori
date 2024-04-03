@@ -28,26 +28,26 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   children,
 }) => {
   return (
-    <Command className="border">
+    <Command className="border ">
       {children}
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
           {autocompleteOptions.map((option) => (
-            <CommandItem key={option.id}>
+            <CommandItem
+              key={option.id}
+              className=" aria-selected:bg-accent text-sm"
+            >
               <div
                 onClick={() => {
                   if (maxTags && tags.length >= maxTags) return;
-                  if (
-                    !allowDuplicates &&
-                    tags.some((tag) => tag.text === option.text)
-                  )
+                  if (!allowDuplicates && tags.some((tag) => tag === option))
                     return;
                   setTags([...tags, option]);
                   onTagAdd?.(option.text);
                 }}
               >
-                {option.text}
+                {option}
               </div>
             </CommandItem>
           ))}

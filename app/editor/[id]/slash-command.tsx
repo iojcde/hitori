@@ -24,7 +24,7 @@ export const suggestionItems = createSuggestionItems([
         .chain()
         .focus()
         .deleteRange(range)
-        .insertTable({ rows: 3, cols: 3 })
+        .insertTable({ rows: 2, cols: 2 })
         .run();
     },
   },

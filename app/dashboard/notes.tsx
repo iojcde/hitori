@@ -1,9 +1,12 @@
 import { db } from "@/lib/db";
 import { WorkspaceCard } from "./vault-card";
 import Link from "next/link";
-import { timeAgo } from "@/lib/utils";
+import { cn, timeAgo } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
+import { TagList } from "@/components/tag/tag-list";
+import { Button } from "@/components/ui/button";
+import { tagVariants } from "@/components/tag/tag";
 
 export const Notes = async () => {
   const session = await auth();
@@ -28,10 +31,23 @@ export const Notes = async () => {
             className="p-4 shadow border rounded-lg "
           >
             <div className="font-semibold text-xl">{note.title}</div>
-            <div className="mt-8">
-              <Badge className="font-normal" variant={"secondary"}>
-                wow
-              </Badge>
+            <div className="mt-8 flex flex-wrap gap-2 items-center">
+              {note.tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className={cn(
+                    tagVariants({ size: "sm", shape: "pill" }),
+                    "pr-2"
+                  )}
+                >
+                  {tag}
+                </span>
+              ))}
+              {note.tags.length > 3 && (
+                <span className="text-gray-10 text-sm">
+                  +{note.tags.length - 3} more
+                </span>
+              )}
             </div>
             <div className="text-gray-10 text-sm mt-2">
               {timeAgo(note.createdAt)}

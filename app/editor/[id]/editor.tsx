@@ -38,6 +38,7 @@ import { useRouter } from "next-nprogress-bar";
 import { toast } from "sonner";
 import React from "react";
 import { ToC } from "./toc";
+import { RightSidebar } from "./sidebar-right";
 
 const MemorizedToC = React.memo(ToC);
 
@@ -60,6 +61,16 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
     </div>
   );
 };
+
+export const CustomTable = Table.extend({
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "div",
+      { class: "tableWrapper" },
+      ["table", HTMLAttributes, ["tbody", 0]],
+    ];
+  },
+});
 
 const Tiptap = ({ note }) => {
   const router = useRouter();
@@ -92,9 +103,9 @@ const Tiptap = ({ note }) => {
     }),
     Typography,
     StarterKit,
-    Table.configure({
-      resizable: true,
-      lastColumnResizable: false,
+    CustomTable.configure({
+      cellMinWidth: 70,
+      allowTableNodeSelection: true,
     }),
     TableRow,
     TableHeader,
@@ -116,8 +127,9 @@ const Tiptap = ({ note }) => {
   const tunnelInstance = useRef(tunnel()).current;
 
   return (
-    <div className="p-8 pt-16">
+    <div className="pt-16 pb-16  ">
       <input
+        placeholder="Title"
         className="text-4xl font-bold outline-none bg-inherit"
         value={title}
         onChange={(e) => {
@@ -151,7 +163,7 @@ const Tiptap = ({ note }) => {
               },
               attributes: {
                 class:
-                  "focus:outline-none border-none prose mt-8 prose-gray prose-strong:font-bold prose-h1:font-bold text-base",
+                  "focus:outline-none border-none prose w-full mt-8 prose-gray prose-strong:font-bold prose-h1:font-bold text-base",
               },
             }}
             content={note.content}
@@ -193,7 +205,7 @@ const Tiptap = ({ note }) => {
             </EditorCommand>
 
             <Statusbar saved={saved} />
-            <MemorizedToC items={tocItems} />
+            <RightSidebar n={note} items={tocItems} />
           </EditorProvider>
         </Provider>
       </EditorCommandTunnelContext.Provider>

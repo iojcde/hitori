@@ -13,6 +13,8 @@ import {
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   ClipboardPasteIcon,
   CopyIcon,
   TableIcon,
@@ -113,7 +115,7 @@ export const EditorContextMenuWrapper = ({ children }) => {
                     editor.chain().focus().addColumnBefore().run();
                   }}
                 >
-                  <ArrowUpIcon size="13" className="mr-2" />
+                  <ArrowLeftIcon size="13" className="mr-2" />
                   Add Column Before
                 </ContextMenuItem>
                 <ContextMenuItem
@@ -121,7 +123,7 @@ export const EditorContextMenuWrapper = ({ children }) => {
                     editor.chain().focus().addColumnAfter().run();
                   }}
                 >
-                  <ArrowDownIcon size="13" className="mr-2" />
+                  <ArrowRightIcon size="13" className="mr-2" />
                   Add Column After
                 </ContextMenuItem>
                 <ContextMenuSeparator />

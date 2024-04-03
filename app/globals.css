@@ -149,12 +149,13 @@ p a {
   overflow: hidden;
 }
 .tiptap table td, .tiptap table th {
-  @apply border border-gray-4;
+  @apply border border-gray-4 whitespace-nowrap;
   min-width: 1em; 
   padding: 3px 5px;
   vertical-align: top;
   box-sizing: border-box;
   position: relative;
+  
 }
 .tiptap table td > *, .tiptap table th > * {
   margin-bottom: 0;
@@ -162,7 +163,7 @@ p a {
 .tiptap table th {
   font-weight: bold;
   text-align: left;
-  background-color: #f5f5f5;
+  background-color: #f7f7f7;
 }
 .tiptap table .selectedCell:after {
   z-index: 2;
@@ -185,8 +186,9 @@ p a {
   background-color: #adf;
   pointer-events: none;
 }
-.tableWrapper {
-  overflow-x: auto;
+.tableWrapper { 
+  @apply overflow-x-auto ;
+
 }
 .resize-cursor {
   cursor: ew-resize;
@@ -195,4 +197,21 @@ p a {
 
 [data-radix-scroll-area-viewport] {
   @apply  scroll-mt-[20px]
+} 
+
+#sidebar{
+  @apply transition -translate-x-full sm:translate-x-0;
 }
+
+#sidebar.open{
+  @apply translate-x-0;
+}
+
+#sidebar-overlay{
+  @apply transition pointer-events-none absolute inset-0 z-40 bg-black bg-opacity-0;
+}
+
+#sidebar-overlay.open{
+  @apply block pointer-events-auto bg-opacity-40;
+}
+

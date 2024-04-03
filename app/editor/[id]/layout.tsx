@@ -1,8 +1,9 @@
-import { Sidebar } from "./sidebar";
+import { MobileNav } from "./mobile-nav";
+
 const Layout = ({ children, params: { id } }) => {
   return (
-    <div className="flex">
-      <Sidebar id={id} />
+    <div className="flex flex-col sm:flex-row h-full">
+      <MobileNav />
       {children}
     </div>
   );

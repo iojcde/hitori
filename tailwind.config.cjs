@@ -50,7 +50,7 @@ const config= {
         },
         accent: {
           // DEFAULT: `${alias("gray", 3)}/80`,
-          DEFAULT: "var(--gray4)",
+          DEFAULT: alias("gray", 3),
           foreground: alias("gray", 12),
         },
         popover: {

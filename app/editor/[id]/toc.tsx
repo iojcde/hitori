@@ -1,13 +1,17 @@
 import { TextSelection } from "@tiptap/pm/state";
 import { useCurrentEditor } from "./editor-context";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { PlusIcon } from "lucide-react";
+import { TagPopover } from "./tag-popover";
+import { TagList } from "@/components/tag/tag-list";
 
 export const ToCItem = ({ item, onItemClick }) => {
   return (
     <div
       className={`toc--item toc--item--level_${item.level} pb-2`}
       style={{
-        paddingLeft: (item.level - 2) * 20,
+        paddingLeft: (item.level - 1) * 20,
       }}
     >
       <a
@@ -17,7 +21,10 @@ export const ToCItem = ({ item, onItemClick }) => {
         }}
         href={`#${item.id}`}
         onClick={(e) => onItemClick(e, item.id)}
-        className={cn(item.isActive && "font-bold text-purple-12")}
+        className={cn(
+          "font-semibold  ",
+          item.isActive && "font-bold  text-purple-12"
+        )}
       >
         {item.itemIndex}. {item.textContent}
       </a>
@@ -29,7 +36,7 @@ export const ToC = ({ items = [] }) => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
-    return null;
+    return <>wowwowowowowoowowowowowo</>;
   }
 
   const onItemClick = (e, id) => {
@@ -65,7 +72,7 @@ export const ToC = ({ items = [] }) => {
   };
 
   return (
-    <div className="toc--list hidden xl:block absolute right-0 inset-y-4 w-80 p-4 text-sm">
+    <div className="toc--list ">
       <h2 className="mb-4 font-bold"> Table of Contents</h2>
       {items.length == 0 && (
         <p className="text-xs font-gray-11">

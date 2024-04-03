@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
-import { TagInputProps, type Tag as TagType } from "./tag-input";
+import { TagInputProps } from "./tag-input";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 
@@ -11,7 +11,7 @@ export const tagVariants = cva(
       variant: {
         default: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         primary:
-          "bg-primary border-primary text-primary-foreground hover:bg-primary/90",
+          "bg-primary border-primary text-primary-foreground ho ver:bg-primary/90",
         destructive:
           "bg-destructive border-destructive text-destructive-foreground hover:bg-destructive/90",
       },
@@ -68,7 +68,7 @@ export const tagVariants = cva(
 );
 
 export type TagProps = {
-  tagObj: TagType;
+  tag: string;
   variant: TagInputProps["variant"];
   size: TagInputProps["size"];
   shape: TagInputProps["shape"];
@@ -84,7 +84,7 @@ export type TagProps = {
 } & Pick<TagInputProps, "direction" | "onTagClick" | "draggable">;
 
 export const Tag: React.FC<TagProps> = ({
-  tagObj,
+  tag,
   direction,
   draggable,
   handleDragStart,
@@ -103,11 +103,11 @@ export const Tag: React.FC<TagProps> = ({
 }) => {
   return (
     <span
-      key={tagObj.id}
+      key={tag}
       draggable={draggable}
-      onDragStart={() => handleDragStart(tagObj.id)}
+      onDragStart={() => handleDragStart(tag)}
       onDragOver={handleDragOver}
-      onDrop={() => handleDrop(tagObj.id)}
+      onDrop={() => handleDrop(tag)}
       className={cn(
         tagVariants({
           variant,
@@ -124,15 +124,15 @@ export const Tag: React.FC<TagProps> = ({
           "cursor-pointer": draggable,
         }
       )}
-      onClick={() => onTagClick?.(tagObj)}
+      onClick={() => onTagClick?.(tag)}
     >
-      {tagObj.text}
+      {tag}
       <Button
         type="button"
         variant="ghost"
         onClick={(e) => {
           e.stopPropagation(); // Prevent event from bubbling up to the tag span
-          onRemoveTag(tagObj.id);
+          onRemoveTag(tag);
         }}
         className={cn("py-1 px-3 h-full hover:bg-transparent")}
       >
