@@ -8,7 +8,15 @@ import rehypeParse from "rehype-parse";
 import rehypeStringify from "rehype-stringify";
 import { revalidatePath } from "next/cache";
 
-export const saveNote = async ({ id, title, content }) => {
+export const saveNote = async ({
+  id,
+  title,
+  content,
+}: {
+  id: string;
+  title: string;
+  content: string;
+}) => {
   const session = await auth();
 
   if (!session) {

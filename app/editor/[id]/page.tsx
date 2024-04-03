@@ -4,8 +4,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { notFound } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const EditorPage = async ({ params: { id }, searchParams: { q } }) => {
+const EditorPage = async ({
+  params: { id },
+  searchParams: { q },
+}: {
+  params: { id: string };
+  searchParams: { q: string | undefined };
+}) => {
   const session = await auth();
   if (!session) return redirect("/login");
 
