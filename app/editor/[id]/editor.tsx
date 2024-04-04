@@ -39,6 +39,7 @@ import { toast } from "sonner";
 import React from "react";
 import { ToC } from "./toc";
 import { RightSidebar } from "./sidebar-right";
+import { Note } from "@prisma/client";
 
 // const MenuBar = ({ editor }: { editor: Editor | null }) => {
 //   if (!editor) {
@@ -70,7 +71,7 @@ export const CustomTable = Table.extend({
   },
 });
 
-const Tiptap = ({ note }) => {
+const Tiptap = ({ note }: { note: Note }) => {
   const router = useRouter();
 
   const [saved, setSaved] = useState(true);

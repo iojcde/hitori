@@ -8,19 +8,20 @@ import { toast } from "sonner";
 export const SidebarContent = () => {
   const router = useRouter();
   const path = usePathname();
+  const a = new URL(
+    path,
+    process.env.NODE_ENV == "development"
+      ? "http://localhost:3000"
+      : "https://hitori.vercel.app"
+  );
 
   return (
     <div className="px-2 flex items-center gap-2">
       <input
+        defaultValue={a.searchParams.get("q") || ""}
         className="text-xs px-4 py-2 border w-full h-8 rounded-sm"
         placeholder="Search anything"
         onChange={(e) => {
-          const a = new URL(
-            path,
-            process.env.NODE_ENV == "development"
-              ? "http://localhost:3000"
-              : "https://hitori.vercel.app"
-          );
           a.searchParams.set("q", e.target.value);
           router.push(a.toString());
         }}
