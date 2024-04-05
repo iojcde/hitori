@@ -25,7 +25,7 @@ export function CommandMenu() {
   const [open, setOpen] = useState(false);
 
   const [search, setSearch] = useState("");
-  const [pages, setPages] = useState([]);
+  const [pages, setPages] = useState<string[]>([]);
 
   const [selected, setSelected] = useState("");
   const page = pages[pages.length - 1];
@@ -134,6 +134,7 @@ export function CommandMenu() {
                       toast.promise(newNote(), {
                         loading: "Creating a new note...",
                         success: (n) => {
+                          if (!n) throw new Error("Note not created");
                           router.push(`/editor/${n.id}`);
                           return "Note created";
                         },
@@ -237,7 +238,7 @@ const Highlighter = ({
     const firstItem = document.querySelector(".command-menu [cmdk-item]");
     if (firstItem) {
       firstItem.setAttribute("aria-selected", "true");
-      setSelected(firstItem.getAttribute("data-value"));
+      setSelected(firstItem.getAttribute("data-value") || "");
     }
   }, [page]);
 
