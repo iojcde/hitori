@@ -42,7 +42,7 @@ export const Sidebar = async ({ id, q }: { id: string; q: string }) => {
                 },
                 {
                   tags: {
-                    hasSome: q.split(),
+                    hasSome: q.split(''),
                   },
                 },
               ],
