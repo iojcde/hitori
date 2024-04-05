@@ -10,15 +10,15 @@ export const MobileNav = () => {
       <button
         id="sidebar-overlay"
         onClick={() => {
-          document.querySelector("#sidebar").classList.toggle("open");
-          document.querySelector("#sidebar-overlay").classList.toggle("open");
+          document.querySelector("#sidebar")?.classList.toggle("open");
+          document.querySelector("#sidebar-overlay")?.classList.toggle("open");
         }}
       />
       <div className="sm:hidden flex bg-white dark:bg-black items-center justify-between z-10 top-0 inset-x-0 h-14 p-2">
         <Button
           onClick={() => {
-            document.querySelector("#sidebar").classList.toggle("open");
-            document.querySelector("#sidebar-overlay").classList.toggle("open");
+            document.querySelector("#sidebar")?.classList.toggle("open");
+            document.querySelector("#sidebar-overlay")?.classList.toggle("open");
           }}
           variant="ghost"
           className="px-2 relative z-50 text-violet-500 focus:text-violet-500"
