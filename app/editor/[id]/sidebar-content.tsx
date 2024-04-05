@@ -31,6 +31,7 @@ export const SidebarContent = () => {
           toast.promise(newNote(), {
             loading: "Creating a new note...",
             success: (n) => {
+              if (!n) throw new Error("Note id not found");
               router.push(`/editor/${n.id}`);
               return "Note created";
             },
