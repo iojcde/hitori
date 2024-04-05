@@ -64,7 +64,7 @@ export const ToC = ({ items = [] }: { items: TableOfContentData }) => {
 
       if (history.pushState) {
         // eslint-disable-line
-        history.pushState(null, null, `#${id}`); // eslint-disable-line
+        history.pushState(null, "", `#${id}`); // eslint-disable-line
       }
 
       const scrollArea = document.querySelector(
