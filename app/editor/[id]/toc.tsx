@@ -45,11 +45,12 @@ export const ToC = ({ items = [] }: { items: TableOfContentData }) => {
     return <>wowwowowowowoowowowowowo</>;
   }
 
-  const onItemClick = (e, id) => {
+  const onItemClick = (e: any, id: any) => {
     e.preventDefault();
 
     if (editor) {
       const element = editor.view.dom.querySelector(`[data-toc-id="${id}"`);
+      if (!element) return console.error("Element not found", id);
       const pos = editor.view.posAtDOM(element, 0);
 
       // set focus
