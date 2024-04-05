@@ -20,8 +20,8 @@ import {
   TableIcon,
   TrashIcon,
 } from "lucide-react";
-import { useState } from "react";
-export const EditorContextMenuWrapper = ({ children }) => {
+import { ReactNode, useState } from "react";
+export const EditorContextMenuWrapper = ({ children }: { children: ReactNode}) => {
   const { editor } = useCurrentEditor();
 
   const [state, setState] = useState<{
