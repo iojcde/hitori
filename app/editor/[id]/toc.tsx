@@ -87,12 +87,7 @@ export const ToC = ({ items = [] }: { items: TableOfContentData }) => {
         </p>
       )}
       {items.map((item, i) => (
-        <ToCItem
-          onItemClick={onItemClick}
-          key={item.id}
-          item={item}
-          index={i + 1}
-        />
+        <ToCItem onItemClick={onItemClick} key={item.id} item={item} />
       ))}
     </div>
   );
