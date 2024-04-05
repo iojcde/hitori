@@ -9,7 +9,7 @@ import { SidebarContent } from "./sidebar-content";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
-export const Sidebar = async ({ id, q }) => {
+export const Sidebar = async ({ id, q }: { id: string; q: string }) => {
   const session = await auth();
 
   if (!session) return null;
@@ -69,10 +69,12 @@ export const Sidebar = async ({ id, q }) => {
         <div className="flex gap-2 items-center px-6 py-4">
           <Avatar className="h-8 w-8 select-none ">
             <AvatarImage
-              src={session?.user.image}
+              src={session?.user.image || ""}
               alt={session?.user.name || ""}
             />
-            <AvatarFallback>{session?.user.name[0]}</AvatarFallback>
+            <AvatarFallback>
+              {session.user.name ? session?.user.name[0] : ""}
+            </AvatarFallback>
           </Avatar>
           <div>
             <div className="text-sm font-semibold">
@@ -85,7 +87,7 @@ export const Sidebar = async ({ id, q }) => {
             )}
           </div>
         </div>
-        <SidebarContent q={q} />
+        <SidebarContent />
 
         <div className="px-2 mt-4 space-y-2">
           {notes.map((n) => (

@@ -28,7 +28,7 @@ const EditorPage = async ({
 
   return (
     <>
-      <Sidebar id={id} q={q} />
+      <Sidebar id={id} q={q || ""} />
       <ScrollArea id="editor-scrollarea" className=" h-screen w-full">
         <div className="container mx-auto w-full">
           <Editor note={note} />
