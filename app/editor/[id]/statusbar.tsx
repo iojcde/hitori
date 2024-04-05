@@ -1,6 +1,6 @@
 import { useCurrentEditor } from "./editor-context";
 
-export const Statusbar = ({ saved }) => {
+export const Statusbar = ({ saved }: { saved: boolean }) => {
   const { editor } = useCurrentEditor();
   if (!editor) {
     return null;
