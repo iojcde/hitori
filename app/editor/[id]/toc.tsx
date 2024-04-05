@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { PlusIcon } from "lucide-react";
 import { TagPopover } from "./tag-popover";
 import { TagList } from "@/components/tag/tag-list";
+import { TableOfContentData } from "@tiptap-pro/extension-table-of-contents";
 
 export const ToCItem = ({ item, onItemClick }) => {
   return (
@@ -32,7 +33,7 @@ export const ToCItem = ({ item, onItemClick }) => {
   );
 };
 
-export const ToC = ({ items = [] }) => {
+export const ToC = ({ items = [] }: { items: TableOfContentData }) => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
